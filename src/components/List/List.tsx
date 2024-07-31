@@ -28,8 +28,8 @@ export const List = () => {
   Axios.defaults.withCredentials = true;
   useEffect(() => {
     (async () => {
-      const { status } = await _AuthService.verify();
-      if (!status) _useNavigate("/");
+      // const { status } = await _AuthService.verify();
+      // if (!status) _useNavigate("/");
       const { result, next }: any = await _BlogPostService.get();
       setposts(() => result);
       setstate(() => (result?.length > 0 ? State.COMPLETE : State.EMPTY));
