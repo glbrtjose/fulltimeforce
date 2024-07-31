@@ -17,6 +17,7 @@ import GoogleAuth from "../GoogleAuth/GoogleAuth";
 import { AuthService } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
+import moment from "moment-timezone";
 
 export const List = () => {
   const postState: any = useSelector(({ counter, posts }: any) => posts);
@@ -31,7 +32,7 @@ export const List = () => {
       // const { status } = await _AuthService.verify();
       // if (!status) _useNavigate("/");
       const { result, next }: any = await _BlogPostService.get();
-      setposts(() => result);
+      setposts(() => result || []);
       setstate(() => (result?.length > 0 ? State.COMPLETE : State.EMPTY));
     })();
   }, [postState]);
@@ -71,8 +72,8 @@ export const List = () => {
               <p>title: {title}</p>
               <p>content: {content}</p>
               <p>author: {author}</p>
-              <p>createdAt: {createdAt}</p>
-              <p>updatedAt: {updatedAt}</p>
+              <p>createdAt: {moment(createdAt).format("DD/MM/YYYY")}</p>
+              <p>updatedAt: {moment(updatedAt).format("DD/MM/YYYY")}</p>
             </div>
           )
         )}

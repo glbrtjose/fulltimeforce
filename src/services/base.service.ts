@@ -53,7 +53,7 @@ export abstract class HTTPBaseAuthService {
 
   private handleError = async (error: any) => {
     let result: any;
-    const statusCodes = [0, 401, 403, 504];
+    const statusCodes = [403];
     const code: any = error.response?.status;
     const defaultMessage = "Please try again later";
     if (statusCodes.includes(code)) {
@@ -62,15 +62,8 @@ export abstract class HTTPBaseAuthService {
       const message: any = error?.response?.data;
       result = await this.refreshToken(code, message?.detail);
       switch (code) {
-        case 401:
-          result.redirect = {
-            destination: "/login",
-          };
-          break;
         case 403:
-          result.redirect = {
-            destination: "/404",
-          };
+          window.location.href='/';
           break;
         case 504:
           if (!originalRequest?._retry) {
