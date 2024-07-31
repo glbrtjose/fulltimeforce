@@ -15,9 +15,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import GoogleAuth from "../GoogleAuth/GoogleAuth";
 import { AuthService } from "../../services/auth.service";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Axios from "axios";
 import moment from "moment-timezone";
+import Pagination from "../Pagination/Pagination";
 
 export const List = () => {
   const postState: any = useSelector(({ counter, posts }: any) => posts);
@@ -26,15 +27,30 @@ export const List = () => {
   const [posts, setposts] = useState([]);
   const [state, setstate] = useState(State.LOADING);
   const _useNavigate = useNavigate();
+  const [searchParams, setSearchParams]: any = useSearchParams();
+  const fillList = (n: number = 10): any[] => {
+    const result = [...[...Array(n)].map((item, index) => index)];
+    return result;
+  };
+  const [pages, setpages]: any = useState([]);
+  const maxPages = 3;
   useEffect(() => {
     (async () => {
-      // const { status } = await _AuthService.verify();
-      // if (!status) _useNavigate("/");
-      const { result, next }: any = await _BlogPostService.get();
+      const size = +searchParams.get("size") || 10;
+      const page = +searchParams.get("page") || 1;
+      const { result, next }: any = await _BlogPostService.get("", page, size);
       setposts(() => result || []);
       setstate(() => (result?.length > 0 ? State.COMPLETE : State.EMPTY));
+      const list = fillList(next ? page + 1 : page + 1);
+      setpages(() =>
+        result?.length >= size
+          ? list.filter((item, index) => item >= page - maxPages + 1)
+          : fillList(page + 1).filter(
+              (item, index) => item >= page - maxPages + 1
+            )
+      );
     })();
-  }, [postState]);
+  }, [postState, searchParams]);
   return (
     <div className="list-container">
       <div className="top-icon">
@@ -76,6 +92,9 @@ export const List = () => {
             </div>
           )
         )}
+      </div>
+      <div className="pagination-container">
+        <Pagination pages={pages} />
       </div>
     </div>
   );

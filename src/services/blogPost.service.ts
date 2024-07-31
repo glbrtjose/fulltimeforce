@@ -14,8 +14,10 @@ export class BlogPostService extends HTTPBaseAuthService {
     return this.classInstance;
   }
 
-  public get = async (id?: string) => {
-    const response = await this.instance.get(`/${this.epName}/${id || ""}`);
+  public get = async (id?: string, page = 1, size = 10) => {
+    const response = await this.instance.get(
+      `/${this.epName}/${id || ""}?page=${page}&size=${size}`
+    );
     return response;
   };
 
