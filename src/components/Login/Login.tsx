@@ -19,7 +19,9 @@ const Login = () => {
   const onSubmit = async ({ username, password }: any) => {
     const { status } = await _AuthService.authenticate(username, password);
     if (status) {
-      _useNavigate("/posts");
+      setTimeout(() => {
+        _useNavigate("/posts");
+      }, 5000);
     }
   };
   return (
