@@ -1,5 +1,5 @@
 enum BlogPost {
-  LOAD = "load",
+  DELETE = "delete",
 }
 
 export default BlogPost;

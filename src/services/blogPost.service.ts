@@ -18,4 +18,9 @@ export class BlogPostService extends HTTPBaseAuthService {
     const response = await this.instance.get(`/${this.epName}/`);
     return response;
   };
+
+  public delete = async (id: string) => {
+    const response = await this.instance.delete(`/${this.epName}/${id}`);
+    return response;
+  };
 }

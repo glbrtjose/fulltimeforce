@@ -11,14 +11,14 @@ const postsReducer = async (state = initialState, action) => {
   switch (action.type) {
     case BlogPost.LOAD:
       // (async () => {
-        const _BlogPostService = BlogPostService.getInstance();
-        const { result, next } = await _BlogPostService.get();
-        return { ...state, posts: { result, next } };
-      // })();
-    // case "DECREMENT":
-    //   const diff = state.counter - 1;
-    //   localStorage.setItem("counter", diff);
-    //   return { ...state, counter: diff };
+      const _BlogPostService = BlogPostService.getInstance();
+      const { result, next } = await _BlogPostService.get();
+      return { ...state, posts: { result, next } };
+    // })();
+    case BlogPost.DELETE:
+      const diff = state.counter - 1;
+      localStorage.setItem("counter", diff);
+      return { ...state, counter: diff };
     default:
       return state;
   }
