@@ -18,11 +18,7 @@ const Login = () => {
   const _useNavigate = useNavigate();
   const onSubmit = async ({ username, password }: any) => {
     const { status } = await _AuthService.authenticate(username, password);
-    if (status) {
-      setTimeout(() => {
-        _useNavigate("/posts");
-      }, 5000);
-    }
+    if (status) _useNavigate("/posts");
   };
   return (
     <div className="container">
