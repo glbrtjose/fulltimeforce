@@ -14,8 +14,23 @@ export class BlogPostService extends HTTPBaseAuthService {
     return this.classInstance;
   }
 
-  public get = async () => {
-    const response = await this.instance.get(`/${this.epName}/`);
+  public get = async (id?: string) => {
+    const response = await this.instance.get(`/${this.epName}/${id || ""}`);
+    return response;
+  };
+
+  public update = async (id: string, value: any) => {
+    const payload = value;
+    const response = await this.instance.patch(
+      `/${this.epName}/${id || ""}`,
+      payload
+    );
+    return response;
+  };
+
+  public create = async (value: any) => {
+    const payload = value;
+    const response = await this.instance.post(`/${this.epName}/`, payload);
     return response;
   };
 

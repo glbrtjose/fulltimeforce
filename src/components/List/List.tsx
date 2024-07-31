@@ -27,22 +27,24 @@ export const List = () => {
   const _useNavigate = useNavigate();
   Axios.defaults.withCredentials = true;
   useEffect(() => {
-    // @ts-ignore
-    // store.dispatch({ type: BlogPost.LOAD });
     (async () => {
       const { status } = await _AuthService.verify();
-      console.log("status: ", status);
       if (!status) _useNavigate("/");
       const { result, next }: any = await _BlogPostService.get();
       setposts(() => result);
       setstate(() => (result?.length > 0 ? State.COMPLETE : State.EMPTY));
     })();
-  }, []);
+  }, [postState]);
   return (
     <div className="list-container">
-      {/* <GoogleAuth /> */}
       <div className="top-icon">
-        <FontAwesomeIcon className="add" icon={faPlusCircle} />
+        <FontAwesomeIcon
+          className="add"
+          icon={faPlusCircle}
+          onClick={() => {
+            _useNavigate("/posts/new");
+          }}
+        />
       </div>
       <div className="grid">
         {posts?.map(
@@ -50,15 +52,18 @@ export const List = () => {
             <div key={_id} className="card-container">
               <div className="icon-container">
                 <div className="icon">
-                  <FontAwesomeIcon className="edit" icon={faPencil} />
+                  <FontAwesomeIcon
+                    className="edit"
+                    icon={faPencil}
+                    onClick={() => {
+                      _useNavigate(`/posts/${_id}`);
+                    }}
+                  />
                   <FontAwesomeIcon
                     className="delete"
                     icon={faTrash}
                     onClick={async () => {
-                      // store.dispatch({ type: BlogPost.DELETE });
-                      console.log("_id: ", _id);
-                      const { result, next }: any =
-                        await _BlogPostService.delete(_id);
+                      store.dispatch({ type: BlogPost.DELETE, id: _id });
                     }}
                   />
                 </div>

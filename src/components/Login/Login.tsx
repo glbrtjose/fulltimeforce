@@ -18,8 +18,9 @@ const Login = () => {
   const _useNavigate = useNavigate();
   const onSubmit = async ({ username, password }: any) => {
     const { status } = await _AuthService.authenticate(username, password);
-    console.log('status: ', status);
-    if (status) _useNavigate("/posts");
+    if (status) {
+      _useNavigate("/posts");
+    }
   };
   return (
     <div className="container">
@@ -47,7 +48,7 @@ const Login = () => {
             </div>
           </div>
           <button className="btn" type="submit">
-            Enviar
+            Submit
           </button>
         </form>
       </div>
