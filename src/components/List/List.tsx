@@ -26,7 +26,6 @@ export const List = () => {
   const [posts, setposts] = useState([]);
   const [state, setstate] = useState(State.LOADING);
   const _useNavigate = useNavigate();
-  Axios.defaults.withCredentials = true;
   useEffect(() => {
     (async () => {
       // const { status } = await _AuthService.verify();
