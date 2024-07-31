@@ -46,8 +46,7 @@ export abstract class HTTPBaseAuthService {
   };
 
   private handleRequest = async (config: any) => {
-    if (this.token !== null)
-      config.headers["Authorization"] = `Bearer ${this.token}`;
+    config.headers["Authorization"] = `${localStorage.getItem("token")}`;
     return config;
   };
 
@@ -63,7 +62,7 @@ export abstract class HTTPBaseAuthService {
       result = await this.refreshToken(code, message?.detail);
       switch (code) {
         case 403:
-          window.location.href='/';
+          window.location.href = "/";
           break;
         case 504:
           if (!originalRequest?._retry) {

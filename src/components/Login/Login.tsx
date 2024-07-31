@@ -17,8 +17,14 @@ const Login = () => {
   Axios.defaults.withCredentials = true;
   const _useNavigate = useNavigate();
   const onSubmit = async ({ username, password }: any) => {
-    const { status } = await _AuthService.authenticate(username, password);
-    if (status) _useNavigate("/posts");
+    const { token, status }: any = await _AuthService.authenticate(
+      username,
+      password
+    );
+    if (token) {
+      localStorage.setItem("token", token);
+      _useNavigate("/posts");
+    }
   };
   return (
     <div className="container">
