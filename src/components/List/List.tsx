@@ -13,30 +13,41 @@ import {
   faPencil,
   faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import GoogleAuth from "../GoogleAuth/GoogleAuth";
+import { AuthService } from "../../services/auth.service";
+import { useNavigate } from "react-router-dom";
+import Axios from "axios";
 
 export const List = () => {
   const postState: any = useSelector(({ counter, posts }: any) => posts);
   const _BlogPostService = BlogPostService.getInstance();
+  const _AuthService = AuthService.getInstance();
   const [posts, setposts] = useState([]);
   const [state, setstate] = useState(State.LOADING);
+  const _useNavigate = useNavigate();
+  Axios.defaults.withCredentials = true;
   useEffect(() => {
     // @ts-ignore
     // store.dispatch({ type: BlogPost.LOAD });
     (async () => {
+      const { status } = await _AuthService.verify();
+      console.log("status: ", status);
+      if (!status) _useNavigate("/");
       const { result, next }: any = await _BlogPostService.get();
       setposts(() => result);
       setstate(() => (result?.length > 0 ? State.COMPLETE : State.EMPTY));
     })();
   }, []);
   return (
-    <div className="container">
+    <div className="list-container">
+      {/* <GoogleAuth /> */}
       <div className="top-icon">
         <FontAwesomeIcon className="add" icon={faPlusCircle} />
       </div>
       <div className="grid">
         {posts?.map(
           ({ _id, title, content, author, createdAt, updatedAt }: any) => (
-            <div key={_id} className="container">
+            <div key={_id} className="card-container">
               <div className="icon-container">
                 <div className="icon">
                   <FontAwesomeIcon className="edit" icon={faPencil} />

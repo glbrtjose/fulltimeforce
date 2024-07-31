@@ -14,8 +14,14 @@ export class AuthService extends HTTPBaseAuthService {
     return this.classInstance;
   }
 
-  public authenticate = async () => {
-    const response = await this.instance.post(`/${this.epName}`);
+  public authenticate = async (username: string, password: string) => {
+    const payload = { username, password };
+    const response = await this.instance.post(`/${this.epName}`, payload);
+    return response;
+  };
+
+  public verify = async () => {
+    const response = await this.instance.get(`/verify`);
     return response;
   };
 }
