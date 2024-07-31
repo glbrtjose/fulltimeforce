@@ -1,20 +1,24 @@
 import { combineReducers } from "redux";
+import BlogPost from "../enums/BlogPost.enum.ts";
+import { BlogPostService } from "../services/blogPost.service";
 
 // Reducers
 const initialState = {
-  counter: +localStorage.getItem("counter") || 0,
+  posts: { result: [], next: false },
 };
 
-const counterReducer = (state = initialState, action) => {
+const postsReducer = async (state = initialState, action) => {
   switch (action.type) {
-    case "INCREMENT":
-      const sum = state.counter + 1;
-      localStorage.setItem("counter", sum);
-      return { ...state, counter: sum };
-    case "DECREMENT":
-      const diff = state.counter - 1;
-      localStorage.setItem("counter", diff);
-      return { ...state, counter: diff };
+    case BlogPost.LOAD:
+      // (async () => {
+        const _BlogPostService = BlogPostService.getInstance();
+        const { result, next } = await _BlogPostService.get();
+        return { ...state, posts: { result, next } };
+      // })();
+    // case "DECREMENT":
+    //   const diff = state.counter - 1;
+    //   localStorage.setItem("counter", diff);
+    //   return { ...state, counter: diff };
     default:
       return state;
   }
@@ -22,7 +26,7 @@ const counterReducer = (state = initialState, action) => {
 
 // Combine Reducers
 const rootReducer = combineReducers({
-  counter: counterReducer,
+  posts: postsReducer,
   // Add other reducers here if you have more
 });
 
